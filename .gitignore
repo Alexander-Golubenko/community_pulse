@@ -9,17 +9,12 @@ __pycache__/
 *.tmp
 *.swp
 
-# Playwright временные данные (если есть)
-playwright/.cache/
-playwright/trace.zip
-
-# Секреты и конфигурации
+# Конфигурации
 .env
 
 # IDE-файлы
 .idea/
 .vscode/
 
-# FAISS индексы
-*.faiss
+
 
