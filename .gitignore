@@ -22,7 +22,4 @@ playwright/trace.zip
 
 # FAISS индексы
 *.faiss
-*.json  # если ты не хочешь пушить сгенерированные отчёты
 
-# Папки проекта
-/instanse/
