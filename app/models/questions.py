@@ -1,4 +1,5 @@
 from app.models import db
+from datetime import datetime
 
 
 class Category(db.Model):
@@ -6,6 +7,8 @@ class Category(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=True)
+
 
 class Question(db.Model):
     __tablename__ = 'questions'
