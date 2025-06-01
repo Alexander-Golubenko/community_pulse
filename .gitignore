@@ -1,0 +1,28 @@
+# Виртуальное окружение
+.venv/
+
+# Кэш и временные файлы
+__pycache__/
+*.py[cod]
+*.log
+.cache/
+*.tmp
+*.swp
+
+# Playwright временные данные (если есть)
+playwright/.cache/
+playwright/trace.zip
+
+# Секреты и конфигурации
+.env
+
+# IDE-файлы
+.idea/
+.vscode/
+
+# FAISS индексы
+*.faiss
+*.json  # если ты не хочешь пушить сгенерированные отчёты
+
+# Папки проекта
+/instanse/
