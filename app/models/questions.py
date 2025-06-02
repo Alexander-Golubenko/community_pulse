@@ -8,7 +8,7 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=True)
-
+    questions = db.relationship('Question', back_populates='category', lazy=True)
 
 class Question(db.Model):
     __tablename__ = 'questions'
@@ -17,6 +17,7 @@ class Question(db.Model):
     text = db.Column(db.String(255), nullable=False)
     responses = db.relationship("Response", back_populates='question', lazy=True)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False, default=1)
+    category = db.relationship("Category", back_populates="questions", lazy=True)
 
     def __repr__(self):
         return f'Question: {self.text}'

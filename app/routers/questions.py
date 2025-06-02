@@ -30,11 +30,14 @@ def create_question():
     if existing:
         return jsonify({'message': 'Такой вопрос уже существует.'}), 400
     # Создаем экземпляр вопроса
-    question = Question(text=data['text'])
+    question = Question(
+        text=question_data.text,
+        category_id=question_data.category_id
+    )
     db.session.add(question) # Добавляем вопрос в сессию для записи
     db.session.commit() # Фиксируем изменения в базе данных
 
-    return jsonify({'message': 'Вопрос создан', 'id': question.id}), 201
+    return jsonify({'message': 'Вопрос создан', 'id': question.id, 'category_id': question.category_id}), 201
 
 
 @questions_bp.route('/<int:question_id>', methods=['GET'] )
@@ -43,7 +46,7 @@ def get_question(question_id):
     question = Question.query.get(question_id)
     if question is None:
         return jsonify({'message': 'Вопрос с таким ID не найден.'}), 404
-    return jsonify({'id': f'{question.id}', 'message': f'Вопрос: {question.text}'}), 200
+    return jsonify({'id': question.id, 'question': question.text, 'category_id': question.category_id}), 200
 
 
 @questions_bp.route('/<int:question_id>', methods=['PUT'])
