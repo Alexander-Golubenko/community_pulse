@@ -8,16 +8,17 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=True)
-    questions = db.relationship('Question', back_populates='category', lazy=True)
+    questions = db.relationship('Question', back_populates='category', lazy=True, cascade="all, delete-orphan")
 
 class Question(db.Model):
     __tablename__ = 'questions'
 
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(255), nullable=False)
-    responses = db.relationship("Response", back_populates='question', lazy=True)
+    responses = db.relationship("Response", back_populates='question', lazy=True, cascade="all, delete-orphan")
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False, default=1)
     category = db.relationship("Category", back_populates="questions", lazy=True)
+    statistic = db.relationship("Statistic", back_populates="question", lazy=True, uselist=False, cascade="all, delete-orphan")
 
     def __repr__(self):
         return f'Question: {self.text}'
@@ -30,7 +31,7 @@ class Statistic(db.Model):
     agree_count = db.Column(db.Integer, nullable=False, default=0)
     disagree_count = db.Column(db.Integer, nullable=False, default=0)
 
-    question = db.relationship('Question', backref=db.backref('statistic', lazy=True))
+    question = db.relationship('Question', back_populates='statistic', lazy=True)
 
     def __repr__(self):
         return f'Statistic for Question {self.question_id} : {self.agree_count} agree, {self.disagree_count} disagree>'

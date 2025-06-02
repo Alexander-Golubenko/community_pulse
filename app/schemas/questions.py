@@ -20,13 +20,22 @@ class CategoryBase(BaseModel):
         from_attributes = True
 
 
+class CategoryCreate(BaseModel):
+    name: str
+
+
+class CategoryResponse(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        from_attributes = True
+
 class QuestionResponse(BaseModel):
     id: int
     text: str
-    category_id: int
-    category: Optional[CategoryBase]
+    category: Optional[CategoryResponse]
 
     class Config:
         # Указываем Pydantic использовать эти параметры чтобы можно было переносить данные прямо с объекта
         from_attributes = True
-

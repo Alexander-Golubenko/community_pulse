@@ -1,6 +1,7 @@
 from flask import Flask
 from app.routers.questions import questions_bp
 from app.routers.response import response_bp
+from app.routers.categories import categories_bp
 from config import DevelopmentConfig
 from app.models import db
 from flask_migrate import Migrate
@@ -16,6 +17,7 @@ def create_app():
 
     app.register_blueprint(questions_bp)
     app.register_blueprint(response_bp)
+    app.register_blueprint(categories_bp)
 
     @app.route('/')
     def index():
