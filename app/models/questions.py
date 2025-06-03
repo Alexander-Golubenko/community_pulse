@@ -1,6 +1,6 @@
 from app.models import db
 from datetime import datetime
-from sqlalchemy import CheckConstraint
+from sqlalchemy.orm import validates
 
 
 class Category(db.Model):
@@ -11,9 +11,15 @@ class Category(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=True)
     questions = db.relationship('Question', back_populates='category', lazy=True, cascade="all, delete-orphan")
 
-    __table_args__ = (
-        CheckConstraint("name <> ''", name="check_name_not_empty"),
-    )
+    @validates("name")
+    def validate_name(self, key, value):
+        try:
+            cleaned = value.strip()
+            if not cleaned:
+                raise ValueError("Категория не создана. Поле 'name' не может быть пустым.")
+            return cleaned
+        except AttributeError:
+            raise ValueError("Категория не создана. Поле 'name' должно быть непустой строкой.")
 
 class Question(db.Model):
     __tablename__ = 'questions'

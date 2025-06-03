@@ -29,14 +29,27 @@ def create_category():
     existing = Category.query.filter_by(name=category_data.name).first()
     if existing:
         return jsonify({'message': 'Такая категория уже существует.'}), 400
-    # Создаем экземпляр вопроса
-    category = Category(
-        name=category_data.name
-    )
-    db.session.add(category)
-    db.session.commit()
+    # Создаем экземпляр категории с защитой от ValueError из модели
+    try:
+        category = Category(
+            name=category_data.name
+        )
+        db.session.add(category)
+        db.session.commit()
 
-    return jsonify({'message': 'Категория создана', 'id': category.id, 'category_descr': category.name}), 201
+        return jsonify({
+            'message': 'Категория создана',
+            'id': category.id,
+            'category_descr': category.name
+        }), 201
+
+    except ValueError as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 400
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': 'Ошибка сервера при создании категории. Категория не создана.'}), 500
 
 
 @categories_bp.route('/<int:category_id>', methods=['GET'] )
