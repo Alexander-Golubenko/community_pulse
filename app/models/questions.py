@@ -1,5 +1,6 @@
 from app.models import db
 from datetime import datetime
+from sqlalchemy import CheckConstraint
 
 
 class Category(db.Model):
@@ -9,6 +10,10 @@ class Category(db.Model):
     name = db.Column(db.String, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=True)
     questions = db.relationship('Question', back_populates='category', lazy=True, cascade="all, delete-orphan")
+
+    __table_args__ = (
+        CheckConstraint("name <> ''", name="check_name_not_empty"),
+    )
 
 class Question(db.Model):
     __tablename__ = 'questions'
